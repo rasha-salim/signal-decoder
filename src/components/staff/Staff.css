@@ -1,0 +1,162 @@
+.staff-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--staff-bg);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--card-glow);
+  max-width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Scanline effect */
+.staff-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.03) 2px,
+    rgba(0, 0, 0, 0.03) 4px
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Glow border effect */
+.staff-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+}
+
+.staff-svg {
+  width: 100%;
+  max-width: 450px;
+  height: auto;
+  position: relative;
+  z-index: 2;
+}
+
+.staff-line {
+  stroke: var(--staff-line);
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 2px var(--staff-line-glow));
+}
+
+.ledger-line {
+  stroke: var(--ledger-line);
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 3px var(--ledger-line));
+}
+
+.note-head {
+  transition: all var(--transition-fast);
+}
+
+.note-animated .note-head {
+  animation: notePulse 2s ease-in-out infinite;
+}
+
+@keyframes notePulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 8px var(--note-fill));
+    transform: scale(1);
+  }
+  50% {
+    filter: drop-shadow(0 0 20px var(--note-fill)) drop-shadow(0 0 30px var(--note-fill));
+    transform: scale(1.03);
+  }
+}
+
+/* Note states */
+.note-correct .note-head {
+  fill: var(--success) !important;
+  animation: noteCorrect 0.5s ease-out forwards;
+}
+
+.note-wrong .note-head {
+  fill: var(--error) !important;
+  animation: noteWrong 0.4s ease-in-out;
+}
+
+@keyframes noteCorrect {
+  0% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 10px var(--success));
+  }
+  50% {
+    transform: scale(1.4);
+    filter: drop-shadow(0 0 30px var(--success)) drop-shadow(0 0 50px var(--success));
+  }
+  100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 15px var(--success));
+  }
+}
+
+@keyframes noteWrong {
+  0%, 100% {
+    transform: translateX(0);
+    filter: drop-shadow(0 0 10px var(--error));
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}
+
+/* Note hint label */
+.note-hint {
+  font-family: var(--font-display);
+  font-size: 14px;
+  fill: var(--neon-cyan);
+  text-anchor: middle;
+  filter: drop-shadow(0 0 5px var(--neon-cyan));
+  animation: hintPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes hintPulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .staff-container {
+    padding: var(--spacing-md);
+  }
+
+  .staff-svg {
+    max-width: 380px;
+  }
+}
+
+@media (max-width: 480px) {
+  .staff-container {
+    padding: var(--spacing-sm);
+    border-radius: var(--radius-md);
+  }
+
+  .staff-svg {
+    max-width: 320px;
+  }
+}
